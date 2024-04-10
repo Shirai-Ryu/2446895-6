@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
     "scripts": {
-    "start":"node index.js"
+    "start": "node index.js",
+    "build": "echo 'No build needed for this project.'",
+    "build:azure": "npm run build" // Or your actual build command
   },
   "keywords": [],
   "author": "",
@@ -13,3 +15,4 @@
     "express": "^4.19.2"
   }
 }
+
