@@ -1,9 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
     const loadCarsBtn = document.getElementById('loadCarsBtn');
     const carList = document.getElementById('carList');
-    cars = [];
+    let cars = [];  // Added 'let' for proper scoping
+
     loadCarsBtn.addEventListener('click', () => {
-        fetch('http://localhost:3001/cars')
+        fetch('https://2446895-lab6.azurewebsites.net/cars')
             .then(response => response.json())
             .then(data => {
                 cars = data;
@@ -14,8 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     carCard.innerHTML = `
                         <h2>${car.make} ${car.model}</h2>
                         <p><strong>Year:</strong> ${car.year}</p>
-                        <p><strong>Make:</strong> ${car.make}</p>
-                        <p><strong>Model:</strong> ${car.model}</p>
                         <p><strong>Price:</strong> R${car.price}</p>
                         <button class="btn btn-remove" data-index="${index}">Remove</button>
                     `;
@@ -27,25 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     });
 });
-function addCar(newCar) {
-    fetch('http://localhost:3001/cars', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(newCar)
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log('Success:', data);
-            //reload cars
-            // const loadCarsBtn = document.getElementById('loadCarsBtn');
-            loadCarsBtn.click();
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-}
+
+const carForm = document.getElementById('carForm');  // Ensure this is defined
 
 carForm.addEventListener('submit', event => {
     event.preventDefault();
@@ -57,23 +39,40 @@ carForm.addEventListener('submit', event => {
     carForm.reset();
 });
 
-// Function to remove a car
-function removeCar(index) {
-    const carId = cars[index].id;
-    fetch(`http://localhost:3001/cars/${carId}`, {
-        method: 'DELETE'
+function addCar(newCar) {
+    fetch('https://2446895-lab6.azurewebsites.net/cars', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newCar)
     })
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
-            //reload cars
-            // const loadCarsBtn = document.getElementById('loadCarsBtn');
             loadCarsBtn.click();
         })
         .catch(error => {
             console.error('Error:', error);
         });
 }
+
+// Function to remove a car
+function removeCar(index) {
+    const carId = cars[index].id; // Ensure your cars have an 'id' property
+    fetch(`https://2446895-lab6.azurewebsites.net/cars/${carId}`, {
+        method: 'DELETE'
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            loadCarsBtn.click();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
 // Event delegation for remove buttons
 carList.addEventListener('click', event => {
     if (event.target.classList.contains('btn-remove')) {
@@ -81,3 +80,5 @@ carList.addEventListener('click', event => {
         removeCar(index);
     }
 });
+
+// Additional checks and functionalities can be added as needed
