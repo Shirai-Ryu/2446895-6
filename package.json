@@ -6,7 +6,7 @@
     "scripts": {
     "start": "node index.js",
     "build": "echo 'No build needed for this project.'",
-    "build:azure": "npm run build" // Or your actual build command
+    "build:azure": "npm run build" 
   },
   "keywords": [],
   "author": "",
